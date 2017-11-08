@@ -18,11 +18,10 @@ export class ListPage {
   constructor(public alertCtrl:AlertController,public loadingCtrl: LoadingController,public modalCtrl: ModalController, public navCtrl: NavController, public navParams: NavParams,public httpstorage: HttpStorage) {
     this.subject=this.navParams.get('subject');
     this.title=this.navParams.get('title');
-    //this.test=this.navParams.get('test');
     this.test=null;
     this.type=this.navParams.get('type')+1;
     this.loader = this.loadingCtrl.create({
-      content: "更新中...",
+      content: "请耐心等待10秒钟哦...",
       showBackdrop:false
     });
     this.loader.present();
@@ -43,8 +42,9 @@ export class ListPage {
   checkdata(id,type,moduleType,version){
     this.httpstorage.getStorage("s"+id+"i"+type,(data)=>{
       //首先查看本地数据，如果没有，则直接网络数据覆盖
-      if(data==null) this.downdata(id,type,moduleType,version);
-      else{//否则对比两方的数据,同步老数据
+      if(data==null) {
+        this.downdata(id,type,moduleType,version);
+      } else{//否则对比两方的数据,同步老数据
         let tmp=data.exam;
         this.httpstorage.getHttp('/app/appExerciseController.do?getModuleExerciseByCourseIdAndModuleType&subCourseId='+id+'&moduleType='+moduleType,(data)=>{
           if(data.returnCode){
@@ -62,7 +62,6 @@ export class ListPage {
             this.test=newData;
             this.httpstorage.setStorage("s"+id+"i"+type,newData);
             this.httpstorage.setStorage("s"+id+"i"+type+"v",version);//更新版本号
-            console.log("ok");
           }
           this.loader.dismiss();
         })
@@ -70,11 +69,8 @@ export class ListPage {
     })
   }
   getSubsItem(subject:any,type:any){
-    //this.subsItemFlg=[true,true,true,true];
-    //!this.subsItem=[null,null,null,null];
     let id=subject.id;
     let moduleType;
-    //let time=subject.time,currentTime=new Date().getTime();
     switch(type){
       case 1:moduleType=1;break;
       case 2:moduleType=2;break;
@@ -83,15 +79,11 @@ export class ListPage {
       case 5:moduleType=7;break;
       default:moduleType=0;break;
     }
-    //this.setSubsItem(null,type);
-    //if(time!=0&&time<currentTime) this.setSubsItem(0,type);
-    //else 
     if(id!=0){
       //核对版本号
       this.httpstorage.getStorage("s"+id+"i"+type+"v",(data)=>{
         if(data!=null){ //本地已经有版本数据了
           let tmp=data;
-          console.log("local:"+tmp)
           this.httpstorage.getHttp('/app/appModuleController.do?getModuleBySubCourseIdAndModuleType&subCourseId='+id+'&moduleType='+moduleType,(data)=>{
             if(data!=null){ //有网
               if(data.returnCode){ //有数据
@@ -104,12 +96,10 @@ export class ListPage {
                   this.httpstorage.getStorage("s"+id+"i"+type,(data)=>{
                     //本地有保存
                     if(data!=null){
-                      console.log("list,2")
                       this.test=data;
                       this.loader.dismiss();
                     }
                     else{//本地无保存
-                      console.log("list,3")
                       this.downdata(id,type,moduleType,tmp);
                     }
                   })
@@ -138,7 +128,6 @@ export class ListPage {
             if(data!=null){
               if(data.returnCode){//有数据
                 //获取内容并保存
-                console.log("list,6")
                 this.downdata(id,type,moduleType,data.content.versionNo);
               }
               else{//无数据
@@ -155,7 +144,6 @@ export class ListPage {
   }
   ionViewDidLoad(){
     $("#listtoggle").on("click","h1>.cb",function(){
-      //$(this).parent("h1").toggleClass("h1x");
       $(this).toggleClass("cbx");
       $(this).nextAll("h2").toggle();
     })
@@ -164,7 +152,6 @@ export class ListPage {
       $(this).nextAll("h3").toggle();
     })
     $("#listtoggle").on("click","h1>.tj",function(){
-      //$(this).parent("h1").toggleClass("h1x");
       $(this).prev(".cb").toggleClass("cbx");
       $(this).nextAll("h2").toggle();
     })
@@ -182,18 +169,10 @@ export class ListPage {
     }
     return this.done;
   }
-  /*
-  callback = (params) =>{
-    return new Promise((resolve, reject)=>{
-      this.test.exam=params;
-      resolve();
-    })
-  }
-  */
   choose(beg:number,all:number,tit:string,tryOut:any){
     if(tryOut||(this.subject.exam&&this.subject.time>=new Date().getTime())){
       if(this.type==1||this.type==2){
-        let modal = this.modalCtrl.create(ListsPage,{subject:this.subject,title:tit,exams:this.test.exam,beg:beg,all:all});
+        let modal = this.modalCtrl.create(ListsPage,{subject:this.subject,saveQRFunction:this.saveQuestionRecord.bind(this),title:tit,exams:this.test.exam,beg:beg,all:all});
         modal.present();
       }
       else{
@@ -236,7 +215,6 @@ export class ListPage {
       });
       prompt.present();
     }
-    //this.navCtrl.push(ExamPage,{subject:this.subject,title:tit,exams:this.test.exam,beg:beg,all:all});
   }
   clear(){
     let prompt = this.alertCtrl.create({
@@ -250,6 +228,7 @@ export class ListPage {
               v.done=0;
               v.set="";
             }
+            this.saveQuestionRecord();
           }
         },
         {
@@ -262,6 +241,17 @@ export class ListPage {
     prompt.present();
   }
   ionViewWillUnload(){
-    if(this.type==1||this.type==2) this.httpstorage.setStorage("s"+this.subject.id+"i"+this.type,this.test);
+    if(this.type==1||this.type==2) {
+      this.httpstorage.setStorage("s"+this.subject.id+"i"+this.type,this.test);
+    }
+  }
+
+  saveQuestionRecord(){
+    var this_= this;
+    setTimeout(function () {
+      if(this_.type==1||this_.type==2) {
+        this_.httpstorage.setStorage("s"+this_.subject.id+"i"+this_.type,this_.test);
+      }
+    }, 500);
   }
 }

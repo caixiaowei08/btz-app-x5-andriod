@@ -38,8 +38,6 @@ export class HomePage {
     public navParams: NavParams,
     public httpstorage: HttpStorage
   ) {
-    //this.httpstorage.delStorage("play")
-    //this.httpstorage.delAllStorage();
     this.token="";
     this.slides=[{img:'',url:''}];
     this.score={right: 0,all: 0};
@@ -73,7 +71,6 @@ export class HomePage {
     this.segj=j;
     this.choose();
     this.subject=this.getSubject(i,j);
-    console.log(this.subject)
     this.httpstorage.setStorage("subject",this.subject);
     this.getSubsItemAll();
     this.getScore();
@@ -90,7 +87,6 @@ export class HomePage {
       if(data!=null){ //有网
         if(data.returnCode){//有数据
           this.subs=data.content;
-          console.log(data.content);
           this.httpstorage.setStorage("subs",this.subs);
           this.subject=this.getSubject(0,0);
           this.httpstorage.setStorage("subject",this.subject);
@@ -119,12 +115,6 @@ export class HomePage {
             this.subject.name='网络未连接';
             this.httpstorage.setStorage("subject",this.subject);
           }
-          /*
-          this.httpstorage.getStorage("subject",(data)=>{
-            if(data!=null) this.subject=data;
-            this.getSubsItemAll();
-          })
-          */
         })
       }
     })
@@ -153,32 +143,17 @@ export class HomePage {
       case 5:moduleType=7;break;
       default:moduleType=0;break;
     }
-    //this.setSubsItem(null,type);
-    //if(time!=0&&time<currentTime) this.setSubsItem(0,type);
-    //else
     if(id!=0){
       this.httpstorage.getHttp('/app/appModuleController.do?getModuleBySubCourseIdAndModuleType&subCourseId='+id+'&moduleType='+moduleType,(data)=>{
           if(data!=null){ //有网
               if(data.returnCode){ //有数据
                 this.subsItem[type-1]=1;
-                //如果本地没有，则保存版本号
-                /*
-                let tmp=data.content.versionNo;
-                this.httpstorage.getStorage("s"+id+"i"+type+"v",(data)=>{
-                  if(data==null) this.httpstorage.setStorage("s"+id+"i"+type+"v",tmp);
-                })
-                */
                 let tmp=data.content.alias;
                 this.cards[type-1].tit=tmp;
                 this.httpstorage.setStorage("s"+id+"i"+type+"n",tmp);
               }
           }
-          else{//无网，从本地加载
-            /*
-            this.httpstorage.getStorage("s"+id+"i"+type+"v",(data)=>{
-                if(data!=null) this.subsItem[type-1]=1;
-            })
-            */
+          else{
             this.httpstorage.getStorage("s"+id+"i"+type+"n",(data)=>{
               if(data!=null) {
                 this.subsItem[type-1]=1;
@@ -188,7 +163,6 @@ export class HomePage {
           }
       })
       //试题策略
-      //this.httpstorage.getHttp('/app/strategyController.do?doGetAllNotesByExerciseId&subCourseId='+id,(data)=>{
       this.httpstorage.getHttp('/app/strategyController.do?doGetStrategyBySubCourseId&subCourseId='+id,(data)=>{
         if(data!=null&&data.returnCode){
           this.httpstorage.setStorage("s"+id+"s",data.content);
@@ -197,8 +171,6 @@ export class HomePage {
     }
   }
   getSlides(){
-    //this.slide.stopAutoplay();
-    //this.httpstorage.getHttp('/app/carouselController.do?getCarousel',(data)=>{
     this.httpstorage.getHttp('/app/carouselController.do?getCarousel&subCourseId='+this.subject.id,(data)=>{
         if(data!=null){
           if(data.returnCode){
@@ -216,20 +188,16 @@ export class HomePage {
             })
           }
         }
-        //this.slide.startAutoplay();
     })
   }
   slidec(){
     let index=this.slide.realIndex;
     this.navCtrl.push(FramePage,{title:'百题斩',url:this.slides[index].url});
-    //this.navCtrl.push(FramePage,{title:'百题斩',url:url});
   }
   getslide(i){
     return "url("+this.slides[i].img+")";
   }
   choose(){
-    //let modal = this.modalCtrl.create(BookPage, {subject: this.subject});
-    //modal.present();
     $(".tabbar").toggle();
     $(".bookbt").toggleClass("bookbtt");
     $("#bookpage").slideToggle("normal");
@@ -266,28 +234,17 @@ export class HomePage {
       this.navCtrl.push(NotePage,{subject:this.subject,type:n});
       break;
     }
-    //this.navCtrl.push(ListPage,{subject:this.subject,type:str});
   }
   ionViewDidLoad(){
-    //console.log(1);
     this.slide.autoplayDisableOnInteraction=false;
-    /*
-    this.slide.autoplay=6000;
-    this.slide.speed=2000;
-    this.slide.autoplayDisableOnInteraction=false;
-    this.slide.startAutoplay();
-    */
-    //获取题目对错
   }
   ionViewDidEnter(){
     let getScore=this.getScore.bind(this);
     setTimeout(function(){
       getScore();
     },500)
-    //this.slide.startAutoplay();
   }
   ionViewDidLeave(){
-    //this.slide.stopAutoplay();
   }
   getScore(){
     let all=0,right=0;

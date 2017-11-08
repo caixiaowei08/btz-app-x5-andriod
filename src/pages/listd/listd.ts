@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController,ModalController, NavController, NavParams} from 'ionic-angular';
 import { HttpStorage } from '../../providers/httpstorage';
-//import { ListsPage } from '../lists/lists';
 import { ExamPage } from '../exam/exam';
 import { NullPage } from '../null/null';
 import * as $ from "jquery";
@@ -113,9 +112,6 @@ export class ListDPage {
       });
       prompt.present();
     }
-    //let modal = this.modalCtrl.create(ListsPage,{subject:this.subject,title:this.title,exams:this.t1.exam,beg:beg,all:all});
-    //modal.present();
-    //this.navCtrl.push(ExamPage,{subject:this.subject,title:tit,exams:this.test.exam,beg:beg,all:all});
   }
   ionViewDidEnter(){
     if(this.exam.length>0){
@@ -139,4 +135,5 @@ export class ListDPage {
       this.httpstorage.setStorage("s"+this.subject.id+"i2",this.t2);
     }
   }
+
 }

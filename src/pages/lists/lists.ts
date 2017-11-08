@@ -9,9 +9,11 @@ import { HttpStorage } from '../../providers/httpstorage';
 export class ListsPage {
   subject:any;
   title:any;
+  saveQRFunction:any;
   exams:any;
   beg:any;
   all:any;
+  test:any;
   exam:any;
   remembermode:any;
   notdonemode:any;
@@ -25,6 +27,7 @@ export class ListsPage {
     this.exams= this.navParams.get('exams');
     this.beg= this.navParams.get('beg');
     this.all= this.navParams.get('all');
+    this.saveQRFunction= this.navParams.get('saveQRFunction');
     this.exam=new Array();
     this.remembermode=false;
     this.notdonemode=false;
@@ -68,36 +71,6 @@ export class ListsPage {
       }
       if(f1&&f2&&cot<this.sum) this.exam[cot++]=this.exams[i];
     }
-    //this.navCtrl.push(ExamPage,{subject:this.subject,title:this.title,exams:this.exam,beg:0,all:cot}).then(()=>{this.dismiss()});
-    this.navCtrl.push(ExamPage,{subject:this.subject,title:this.title,exams:this.exam,mode:this.remembermode,time:0}).then(()=>{this.dismiss()});
-    /*
-    this.httpstorage.getStorage("s"+this.subject.id+"s",(data)=>{
-      if(data!=null){
-        for(let v of this.exam){
-          for(let w of data.questions){
-            if(v.type==w.examType){
-              v.sb=w.point;
-              break;
-            }
-          }
-        }
-        this.navCtrl.push(ExamPage,{subject:this.subject,title:this.title,exams:this.exam,mode:this.remembermode,time:0}).then(()=>{this.dismiss()});
-      }
-      else{
-        let prompt = this.alertCtrl.create({
-          title: '系统通知',
-          message: "未设置该课程组卷策略！",
-          buttons: [
-            {
-              text: '好',
-              handler: data => {
-              }
-            }
-          ]
-        });
-        prompt.present();
-      }
-    });
-    */
+    this.navCtrl.push(ExamPage,{subject:this.subject,saveQRFunction:this.saveQRFunction,title:this.title,exams:this.exam,mode:this.remembermode,time:0}).then(()=>{this.dismiss()});
   }
 }
