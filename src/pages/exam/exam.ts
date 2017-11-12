@@ -16,7 +16,7 @@ export class ExamPage {
   subject: {id: number, name: string}
   title: any;
   exams: any;
-  saveQRFunction:any;
+  saveQRFunction: any;
   all: any;
   mode: any;
   time: any;
@@ -28,6 +28,7 @@ export class ExamPage {
   setDtk: any;
   token: any;
   jsq: any;
+
   constructor(public viewCtrl: ViewController, public modalCtrl: ModalController, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public httpstorage: HttpStorage) {
     this.subject = this.navParams.get('subject');
     this.title = this.navParams.get('title');
@@ -176,6 +177,7 @@ export class ExamPage {
     }
 
   }
+
   setType1(i: number) {
     this.exam.set = String.fromCharCode(i + 65);
     if (this.exam.done > 0) {
@@ -412,7 +414,9 @@ export class ExamPage {
   }
 
   check() {
-    if (this.exam.set == "") this.exam.done == 0;
+    if (this.exam.set == "") {
+      this.exam.done == 0;
+    }
     else {
       if (this.exam.typeShow == 5 || this.exam.typeShow == 8) {
         if (this.exam.done == 0) this.exam.done = 3;
@@ -442,7 +446,8 @@ export class ExamPage {
       title: this.title,
       exams: this.exams,
       mode: this.time,
-      check: this.check
+      check: this.check,
+      saveQRFunction:this.saveQRFunction
     }).then(() => {
       this.viewCtrl.dismiss()
     });

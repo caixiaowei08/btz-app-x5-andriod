@@ -19,9 +19,6 @@
   <div class="score-tb">
     <table>
       <tr>
-        <!--
-        <td></td><td>做对试题</td><td>做错试题</td><td>分值</td><td>得分</td>
-        -->
         <td></td><td>做对</td><td>做错</td><td *ngIf="mode==0">正确率</td><td *ngIf="mode>0">分值</td><td *ngIf="mode>0">得分</td>
       </tr>
       <tr *ngFor="let r of res">
@@ -31,13 +28,8 @@
         <td *ngIf="mode==0">{{getSum(r.right+r.wrong==0?0:r.right*100/(r.right+r.wrong))}}%</td>
         <td *ngIf="mode>0">{{getSum(r.value)}}</td>
         <td *ngIf="mode>0">{{getSum(r.right+r.wrong==0?0:r.right*r.value/(r.right+r.wrong))}}</td>
-        <!--
-        <td *ngIf="r.right+r.wrong>0">{{r.value}}</td>
-        <td *ngIf="r.right+r.wrong>0">{{r.right*r.value}}</td>
-        -->
       </tr>
     </table>
-    
   </div>
 </ion-content>
 <ion-footer>

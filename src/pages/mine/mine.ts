@@ -22,13 +22,6 @@ export class MinePage {
   ) {
     this.user="";
     this.newmsg=false;
-      /*
-      this.httpstorage.getHttp('/app',(data)=>{
-        if(data!=null){
-          if(data.content.havenew) this.newmsg=true;
-        }
-      })
-      */
   }
   ionViewDidEnter(){
     this.httpstorage.getStorage('user',(data)=>{
