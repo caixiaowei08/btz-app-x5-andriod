@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {ExamPage} from '../exam/exam';
 import {ListPage} from '../list/list';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {Http} from '@angular/http';
+import {Storage} from '@ionic/storage';
+import {HttpStorage} from '../../providers/httpstorage';
 
 @Component({
   selector: 'page-score',
@@ -19,9 +22,9 @@ export class ScorePage {
   subject: any;
   title: any;
   hand: any;
-  saveQRFunction:any;
+  saveQRFunction: any;
 
-  constructor(public alertCtrl: AlertController, private navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, private navCtrl: NavController, public navParams: NavParams, private http: Http, private storage: Storage,public httpStorage:HttpStorage) {
     this.exams = this.navParams.get("exams");
     this.mode = this.navParams.get("mode");
     this.check = this.navParams.get("check");
@@ -99,7 +102,6 @@ export class ScorePage {
     else {
       this.score = this.getSum(alls);
     }
-
     if (this.hand) {
       let prompt = this.alertCtrl.create({
         title: '系统通知',
@@ -118,6 +120,7 @@ export class ScorePage {
       })
       prompt.present();
     }
+    this.sendLogToServe("score.ts:"+this.right+":"+this.all);
     this.saveQRFunction();
   }
 
@@ -155,5 +158,13 @@ export class ScorePage {
       }
     }
     this.navCtrl.push(ExamPage, {subject: this.subject, title: this.title, exams: newexams, mode: 2, time: 0});
+  }
+
+  sendLogToServe(msg) {
+    var this_=this;
+    this_.storage.get("user").then((data) => {
+      this_.httpStorage.getHttp("/app/logController.do?log&userId="+data.userId+"&data=" + msg,(data) => {
+      });
+    });
   }
 }

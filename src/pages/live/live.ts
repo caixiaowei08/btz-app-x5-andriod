@@ -24,7 +24,6 @@ export class LivePage {
     this.seg="s1";
     this.video=null;
     this.live=null;
-
     this.fileTransfer=this.transfer.create();
     this.downqueue=new Array();
     this.vd=new Array();
@@ -37,8 +36,6 @@ export class LivePage {
     })
   }
   choose(i,j){
-    //let modal=this.modalCtrl.create(VideoPage,{subject:this.subject,videos:this.video[i].list[j].list,ft:this.fileTransfer,downqueue:this.downqueue,vd:this.vd})
-    //modal.present();
     this.navCtrl.push(VideoPage,{subject:this.subject,videos:this.video[i].list[j].list,ft:this.fileTransfer,downqueue:this.downqueue,vd:this.vd});
   }
   goLive(i){

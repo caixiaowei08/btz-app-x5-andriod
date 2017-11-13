@@ -3,7 +3,6 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpStorage } from '../providers/httpstorage';
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 
@@ -23,10 +22,10 @@ export class MyApp {
       splashScreen.hide();
       //this.httpstorage.removeAll();
       httpstorage.getStorage('user',(data) => {
-        if(data==null) this.rootPage=LoginPage; 
-        else this.rootPage=TabsPage; 
+        if(data==null) this.rootPage=LoginPage;
+        else this.rootPage=TabsPage;
       });
-      
+
       if(window.JPush) window.JPush.init();
     });
   }

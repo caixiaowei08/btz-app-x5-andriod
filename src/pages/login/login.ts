@@ -4,7 +4,6 @@ import {TabsPage} from '../tabs/tabs';
 import {HttpStorage} from '../../providers/httpstorage';
 import {Storage} from '@ionic/storage';
 
-
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -33,7 +32,6 @@ export class LoginPage {
 
   login() {
     var this_ = this;
-
     this.httpstorage.getHttp('/app/loginController.do?login&userId=' + this.account + '&userPwd=' + this.password, (data) => {
       if (data != null) {
         if (data.returnCode) {
@@ -43,7 +41,7 @@ export class LoginPage {
             userName: data.content.userName
           }
           this_.storge.set("user", user).then((data) => {
-              this.navCtrl.setRoot(TabsPage);
+            this_.navCtrl.setRoot(TabsPage);
             }
           );
         }
@@ -63,7 +61,7 @@ export class LoginPage {
         });
         alert.present();
       }
-    })
+    });
   }
 
   free() {
@@ -74,7 +72,7 @@ export class LoginPage {
       userName: ''
     }
     this_.storge.set("user", user).then((data) => {
-        this.navCtrl.setRoot(TabsPage);
+         this_.navCtrl.setRoot(TabsPage);
       }
     );
   }
@@ -134,7 +132,9 @@ export class LoginPage {
         buttons: ['好'],
       });
       alert.present();
-      if (data.returnCode) this.clear();
+      if (data.returnCode) {
+        this.clear();
+      }
     })
   }
 
