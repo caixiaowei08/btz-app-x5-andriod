@@ -51,8 +51,12 @@ export class HomePage {
   }
 
   fixtit(n) {
-    if (n.length <= 7) return n;
-    else return n.substr(0, 7) + "...";
+    if (n.length <= 7) {
+      return n;
+    }
+    else {
+      return n.substr(0, 7) + "...";
+    }
   }
 
   getSubject(i, j) {
@@ -64,7 +68,6 @@ export class HomePage {
       video: tmp.videoAuth,
       videoClass: tmp.videoClass,
       time: tmp.expirationTime
-
     }
   }
 
@@ -301,4 +304,14 @@ export class HomePage {
       })
     })
   }
+
+  presentAlert(msg) {
+    let alert = this.alertCtrl.create({
+      title: 'Low battery',
+      subTitle: msg,
+      buttons: ['Dismiss']
+    });
+    alert.present();
+  }
+
 }

@@ -6,6 +6,7 @@ import {ScorePage} from '../score/score';
 import {DtkPage} from '../dtk/dtk';
 import {ErrorPage} from '../error/error';
 import {HttpStorage} from '../../providers/httpstorage';
+
 import * as $ from "jquery";
 
 @Component({
@@ -240,7 +241,6 @@ export class ExamPage {
 
   setType3(i: number) {
     this.exam.set = this.getContent1()[i];
-    console.log("exam.set:" + this.exam.set);
     if (this.exam.done > 0) this.check();
     this.saveQRFunction();
   }
