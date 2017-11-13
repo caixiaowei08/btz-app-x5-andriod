@@ -39,25 +39,13 @@ export class FindPage {
             if(this.items.length==0){
               let alert = this.alertCtrl.create({
                 title: '未搜索到相关内容',
-                buttons: ['好的'],
-                //cssClass:'mid'
+                buttons: ['好的']
               });
               alert.present();
             }
           });
         });
       })
-      //this.getSubs(val,1);
-      //this.getSubs(val,2);
     }
   }
-  /*
-  getSubs(s,n){
-    this.httpstorage.getStorage("s"+this.subject.id+"i"+n,(data)=>{
-      for(let e of data.exam){
-        if(e.title.indexOf(s)>=0) this.items.push(e);
-      }
-    })
-  }
-  */
 }

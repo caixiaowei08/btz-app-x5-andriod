@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, ModalController, NavController, NavParams, Slides} from 'ionic-angular';
 import {HttpStorage} from '../../providers/httpstorage';
-
 import {ListPage} from '../list/list';
 import {ListDPage} from '../listd/listd';
 import {SimuPage} from '../simu/simu';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams} from 'ionic-angular';
-import {DomSanitizer} from '@angular/platform-browser';  
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'page-frame',
@@ -17,5 +17,4 @@ export class FramePage {
     this.title=this.navParams.get("title");
     this.url= this.sanitizer.bypassSecurityTrustResourceUrl(navParams.get('url'));
   }
-
 }
