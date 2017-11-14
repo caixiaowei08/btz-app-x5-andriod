@@ -41,9 +41,16 @@ export class LoginPage {
             userName: data.content.userName
           }
           this_.storge.set("user", user).then((data) => {
-            this_.navCtrl.setRoot(TabsPage);
+              this_.navCtrl.setRoot(TabsPage);
             }
-          );
+          ).catch((err) => {
+            let alert = this.alertCtrl.create({
+              title: '系统通知',
+              subTitle: JSON.stringify(err),
+              buttons: ['好'],
+            });
+            alert.present();
+          });
         }
         else {
           let alert = this.alertCtrl.create({
@@ -72,9 +79,16 @@ export class LoginPage {
       userName: ''
     }
     this_.storge.set("user", user).then((data) => {
-         this_.navCtrl.setRoot(TabsPage);
+        this_.navCtrl.setRoot(TabsPage);
       }
-    );
+    ).catch((err) => {
+      let alert = this.alertCtrl.create({
+        title: '系统通知',
+        subTitle: JSON.stringify(err),
+        buttons: ['好'],
+      });
+      alert.present();
+    });
   }
 
   clear() {

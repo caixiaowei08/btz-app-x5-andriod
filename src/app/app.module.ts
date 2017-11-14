@@ -74,7 +74,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     }),
     IonicStorageModule.forRoot({
       name: 'db_btz',
-         driverOrder: ['sqlite', 'websql','indexeddb']
+         driverOrder: [ 'websql','sqlite','indexeddb']
     })
   ],
   bootstrap: [IonicApp],
